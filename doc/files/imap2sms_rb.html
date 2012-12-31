@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: imap2sms.rb</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+  <div id="fileHeader">
+    <h1>imap2sms.rb</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>imap2sms.rb
+
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>2009-02-25 03:21:49 +0000</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+  <div id="contextContent">
+
+
+
+    <div id="description">
+      <p>
+Settings
+</p>
+
+    </div>
+
+
+
+    <div id="requires-list">
+      <h3 class="section-bar">Required files</h3>
+
+      <div class="name-list">
+
+        openssl&nbsp;&nbsp;
+
+        net/smtp&nbsp;&nbsp;
+
+        imap_cache&nbsp;&nbsp;
+      </div>
+    </div>
+
+
+
+   </div>
+
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+
+        <a href="#M000009">check_args</a>&nbsp;&nbsp;
+
+        <a href="#M000005">clean</a>&nbsp;&nbsp;
+
+        <a href="#M000007">compile_template</a>&nbsp;&nbsp;
+
+        <a href="#M000008">email</a>&nbsp;&nbsp;
+
+        <a href="#M000006">run_loop</a>&nbsp;&nbsp;
+
+        <a href="#M000003">usage</a>&nbsp;&nbsp;
+
+        <a href="#M000004">verbose</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+
+  </div>
+
+
+    <!-- if includes -->
+
+
+
+    <div id="section">
+
+
+
+
+
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+
+    <div id="methods">
+
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+
+      <div id="method-M000009" class="method-detail">
+        <a name="M000009"></a>
+
+        <div class="method-heading">
+
+
+          <a href="#M000009" class="method-signature">
+
+
+
+          <span class="method-name">check_args</span><span class="method-args">()</span>
+
+
+
+          </a>
+
+        </div>
+
+        <div class="method-description">
+
+
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000009-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000009-source">
+<pre>
+     <span class="ruby-comment cmt"># File imap2sms.rb, line 107</span>
+107: <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">check_args</span>
+108:         <span class="ruby-identifier">usage</span> <span class="ruby-keyword kw">if</span> [<span class="ruby-identifier">$user</span>,<span class="ruby-identifier">$pass</span>,<span class="ruby-identifier">$alert</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-keyword kw">nil</span>)
+109: <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div id="method-M000005" class="method-detail">
+        <a name="M000005"></a>
+
+        <div class="method-heading">
+
+
+          <a href="#M000005" class="method-signature">
+
+
+
+          <span class="method-name">clean</span><span class="method-args">(str)</span>
+
+
+
+          </a>
+
+        </div>
+
+        <div class="method-description">
+
+
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000005-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000005-source">
+<pre>
+    <span class="ruby-comment cmt"># File imap2sms.rb, line 67</span>
+67: <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">clean</span> <span class="ruby-identifier">str</span>
+68:         <span class="ruby-keyword kw">return</span> <span class="ruby-value str">&quot;&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">str</span>.<span class="ruby-identifier">nil?</span>
+69:         <span class="ruby-identifier">str</span>.
+70:         <span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/\s+/</span>,<span class="ruby-value str">' '</span>). <span class="ruby-comment cmt"># reduce white space</span>
+71:         <span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/(.)\1{3,}/</span><span class="ruby-identifier">m</span>,<span class="ruby-value str">'\1'</span>) <span class="ruby-comment cmt"># reduce 4|more repeated characters</span>
+72: <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div id="method-M000007" class="method-detail">
+        <a name="M000007"></a>
+
+        <div class="method-heading">
+
+
+          <a href="#M000007" class="method-signature">
+
+
+
+          <span class="method-name">compile_template</span><span class="method-args">(message, vars)</span>
+
+
+
+          </a>
+
+        </div>
+
+        <div class="method-description">
+
+
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000007-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000007-source">
+<pre>
+    <span class="ruby-comment cmt"># File imap2sms.rb, line 88</span>
+88: <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">compile_template</span> <span class="ruby-identifier">message</span>, <span class="ruby-identifier">vars</span>
+89:         <span class="ruby-identifier">message</span> = <span class="ruby-identifier">message</span>.<span class="ruby-identifier">dup</span>
+90:         <span class="ruby-identifier">vars</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+91:                 <span class="ruby-identifier">message</span> = <span class="ruby-identifier">message</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-node">&quot;[[#{key.to_s}]]&quot;</span>,<span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_s</span>)
+92:         <span class="ruby-keyword kw">end</span>
+93:         <span class="ruby-identifier">message</span> = <span class="ruby-identifier">message</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/\[\[[^\]]*?\]\]/</span>,<span class="ruby-value str">''</span>)
+94: <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div id="method-M000008" class="method-detail">
+        <a name="M000008"></a>
+
+        <div class="method-heading">
+
+
+          <a href="#M000008" class="method-signature">
+
+
+
+          <span class="method-name">email</span><span class="method-args">(s</span>
+
+
+
+          </a>
+
+        </div>
+
+        <div class="method-description">
+
+
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000008-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000008-source">
+<pre>
+     <span class="ruby-comment cmt"># File imap2sms.rb, line 98</span>
+ 98: <span class="ruby-keyword kw">def</span>  <span class="ruby-identifier">email</span> <span class="ruby-identifier">s</span> <span class="ruby-comment cmt"># hash</span>
+ 99:         <span class="ruby-identifier">smtp</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">SMTP</span>.<span class="ruby-identifier">new</span>( <span class="ruby-identifier">s</span>[<span class="ruby-identifier">:host</span>], <span class="ruby-identifier">s</span>[<span class="ruby-identifier">:port</span>] )
+100:         <span class="ruby-identifier">smtp</span>.<span class="ruby-identifier">set_debug_output</span> <span class="ruby-identifier">$stdout</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">s</span>[<span class="ruby-identifier">:debug</span>]
+101:         <span class="ruby-identifier">smtp</span>.<span class="ruby-identifier">enable_starttls</span>
+102:         <span class="ruby-identifier">smtp</span> = <span class="ruby-identifier">smtp</span>.<span class="ruby-identifier">start</span>( <span class="ruby-identifier">s</span>[<span class="ruby-identifier">:helo</span>], <span class="ruby-identifier">s</span>[<span class="ruby-identifier">:user</span>], <span class="ruby-identifier">s</span>[<span class="ruby-identifier">:pass</span>], <span class="ruby-identifier">:login</span> )
+103:         <span class="ruby-identifier">smtp</span>.<span class="ruby-identifier">send_message</span> <span class="ruby-identifier">s</span>[<span class="ruby-identifier">:body</span>], <span class="ruby-identifier">s</span>[<span class="ruby-identifier">:user</span>], <span class="ruby-identifier">s</span>[<span class="ruby-identifier">:to</span>]
+104:         <span class="ruby-identifier">smtp</span>.<span class="ruby-identifier">finish</span>
+105: <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div id="method-M000006" class="method-detail">
+        <a name="M000006"></a>
+
+        <div class="method-heading">
+
+
+          <a href="#M000006" class="method-signature">
+
+
+
+          <span class="method-name">run_loop</span><span class="method-args">(interval=1, startup=true, &amp;block)</span>
+
+
+
+          </a>
+
+        </div>
+
+        <div class="method-description">
+
+
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000006-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000006-source">
+<pre>
+    <span class="ruby-comment cmt"># File imap2sms.rb, line 74</span>
+74: <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">run_loop</span> <span class="ruby-identifier">interval</span>=<span class="ruby-value">1</span>, <span class="ruby-identifier">startup</span>=<span class="ruby-keyword kw">true</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>
+75:         <span class="ruby-identifier">block</span>.<span class="ruby-identifier">call</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">startup</span>
+76:         <span class="ruby-identifier">last_time</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+77:         <span class="ruby-identifier">loop</span> <span class="ruby-keyword kw">do</span>
+78:                 <span class="ruby-identifier">time</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">last_time</span>
+79:                 <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">time</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">interval</span>
+80:                         <span class="ruby-identifier">sleep</span> (<span class="ruby-identifier">interval</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">time</span>)
+81:                         <span class="ruby-keyword kw">next</span>
+82:                 <span class="ruby-keyword kw">end</span>
+83:                 <span class="ruby-identifier">block</span>.<span class="ruby-identifier">call</span>
+84:                 <span class="ruby-identifier">last_time</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+85:         <span class="ruby-keyword kw">end</span>
+86: <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div id="method-M000003" class="method-detail">
+        <a name="M000003"></a>
+
+        <div class="method-heading">
+
+
+          <a href="#M000003" class="method-signature">
+
+
+
+          <span class="method-name">usage</span><span class="method-args">()</span>
+
+
+
+          </a>
+
+        </div>
+
+        <div class="method-description">
+
+          <p>
+Helpers
+</p>
+
+
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000003-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000003-source">
+<pre>
+    <span class="ruby-comment cmt"># File imap2sms.rb, line 58</span>
+58: <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">usage</span>
+59:         <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Usage: ./#{__FILE__} &lt;user&gt; &lt;pass&gt; &lt;sms&gt; [norun]&quot;</span>
+60:         <span class="ruby-identifier">exit</span> <span class="ruby-value">1</span>
+61: <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div id="method-M000004" class="method-detail">
+        <a name="M000004"></a>
+
+        <div class="method-heading">
+
+
+          <a href="#M000004" class="method-signature">
+
+
+
+          <span class="method-name">verbose</span><span class="method-args">(str, nl = true)</span>
+
+
+
+          </a>
+
+        </div>
+
+        <div class="method-description">
+
+
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000004-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000004-source">
+<pre>
+    <span class="ruby-comment cmt"># File imap2sms.rb, line 63</span>
+63: <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">verbose</span> <span class="ruby-identifier">str</span>, <span class="ruby-identifier">nl</span> = <span class="ruby-keyword kw">true</span>
+64:         <span class="ruby-identifier">print</span> <span class="ruby-identifier">str</span>, (<span class="ruby-identifier">nl</span> <span class="ruby-value">? </span><span class="ruby-value str">&quot;\n&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-value str">&quot;&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">$verbose</span>
+65: <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+
+        </div>
+      </div>
+
+
+
+    </div>
+
+
+
+  </div>
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>
